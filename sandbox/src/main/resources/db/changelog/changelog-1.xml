@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="school" author="mosmanis" context="1">
+        <createTable tableName="person">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="surname" type="VARCHAR(255)"/>
+            <column name="class_id" type="INT"/>
+            <column name="date_of_birth" type="DATE"/>
+            <column name="is_teacher" type="BOOLEAN"/>
+        </createTable>
+        <createTable tableName="school_class">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="grade" type="INT"/>
+            <column name="letter" type="VARCHAR(1)"/>
+            <column name="teacher_id" type="INT"/>
+        </createTable>
+        <createTable tableName="lecture">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="class_id" type="INT"/>
+            <column name="teacher_id" type="INT"/>
+            <column name="schedule_day" type="VARCHAR(10)"/>
+            <column name="schedule_time" type="VARCHAR(5)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
