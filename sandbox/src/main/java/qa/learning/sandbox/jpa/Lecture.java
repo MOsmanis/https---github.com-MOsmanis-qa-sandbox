@@ -9,7 +9,7 @@ public class Lecture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long name;
+    private String name;
     private Long classId;
     private Long teacherId;
     private String scheduleDay;
@@ -20,12 +20,12 @@ public class Lecture {
         return id;
     }
 
-    public Long getName()
+    public String getName()
     {
         return name;
     }
 
-    public void setName(Long name)
+    public void setName(String name)
     {
         this.name = name;
     }
