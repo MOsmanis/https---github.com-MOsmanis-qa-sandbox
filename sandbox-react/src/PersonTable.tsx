@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from "react"
+import Table from 'react-bootstrap/Table';
 
-const PersonTable = () => {
-    const [personList, setPersonList] = useState(null)
-    useEffect(() => {
-        getPersonList()
-    }, [])
-    const getPersonList = () => {
-        fetch("http://localhost:8080/persons")
-            .then(res => res.json())
-            .then(
-                (result) => {                    
-                    setPersonList(result)
-                },
-                (error) => {
-                    setPersonList(null);
-                    console.log(error)
-                }
-            )
-    }
+const PersonTable = ({personList}) => {
     if (!personList) return (<div>No Record Found</div>)
-    return (<div>
-        <h2>Person table</h2>
-        <table className="table">
+    return (
+        <div>
+        <h2>person</h2>
+        {/* <Table striped bordered hover variant="dark" size="sm">
+        <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>surname</th>
+                    <th>class_id</th>
+                    <th>is_teacher</th>
+                </tr>
+            </thead>
+        </Table> */}
+        <div style={{ height: '500px', overflowY: 'auto', border: '1' }} >
+        <Table striped bordered hover variant="dark" size="sm">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>Class ID</th>
-                    <th>Is a teacher</th>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>surname</th>
+                    <th>class_id</th>
+                    <th>is_teacher</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,7 +39,8 @@ const PersonTable = () => {
                     </tr>
                 ))}
             </tbody>
-        </table>
-    </div>)
+        </Table>
+        </div>
+        </div>)
 }
 export default PersonTable;

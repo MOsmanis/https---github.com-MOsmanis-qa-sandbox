@@ -1,33 +1,17 @@
 import React, { useState, useEffect } from "react"
+import Table from "react-bootstrap/Table"
 
-const ClassTable = () => {
-    const [classList, setClassList] = useState(null)
-    useEffect(() => {
-        getClassList()
-    }, [])
-    const getClassList = () => {
-        fetch("http://localhost:8080/classes")
-            .then(res => res.json())
-            .then(
-                (result) => {                    
-                    setClassList(result)
-                },
-                (error) => {
-                    setClassList(null);
-                    console.log(error)
-                }
-            )
-    }
+const ClassTable = ({classList}) => {
     if (!classList) return (<div>No Record Found</div>)
     return (<div>
-        <h2>Class table</h2>
-        <table className="table">
+        <h2>school_class</h2>
+        <Table striped bordered hover variant="dark" size="sm">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Grade</th>
-                    <th>Letter</th>
-                    <th>Teacher ID</th>
+                    <th>id</th>
+                    <th>grade</th>
+                    <th>letter</th>
+                    <th>teacher_id</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +24,7 @@ const ClassTable = () => {
                     </tr>
                 ))}
             </tbody>
-        </table>
+        </Table>
     </div>)
 }
 export default ClassTable;

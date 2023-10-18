@@ -1,39 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React, { useState, useEffect } from "react"
 import PersonTable from './PersonTable'
-import './App.css'
+import './App.scss'
 import ClassTable from './ClassTable'
+import SqlResultsTable from './SqlResultsTable'
+import LectureTable from './LectureTable'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import SandboxForm from './SandboxForm'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [personList, setPersonList] = useState([])
+  useEffect(() => {
+      getPersonList()
+      getClassList()
+      getLectureList()
+    }, [])
+  const getPersonList = () => {
+      fetch("http://localhost:8080/persons")
+          .then(res => res.json())
+          .then(
+              (result) => {                    
+                  setPersonList(result)
+              },
+              (error) => {
+                  setPersonList([]);
+                  console.log(error)
+              }
+          )
+  }
+  const [classList, setClassList] = useState([])
+  const getClassList = () => {
+      fetch("http://localhost:8080/classes")
+          .then(res => res.json())
+          .then(
+              (result) => {                    
+                  setClassList(result)
+              },
+              (error) => {
+                  setClassList([]);
+                  console.log(error)
+              }
+          )
+  }
+  const [lectureList, setLectureList] = useState([])
+  const getLectureList = () => {
+      fetch("http://localhost:8080/lectures")
+          .then(res => res.json())
+          .then(
+              (result) => {                    
+                  setLectureList(result)
+              },
+              (error) => {
+                  setLectureList([]);
+                  console.log(error)
+              }
+          )
+  }
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <PersonTable/>
-      <ClassTable/>
-      
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Container fluid>
+      <Row>
+        <Col>
+          <SandboxForm personList={personList} classList={classList}/>
+        </Col>
+        <Col>
+          <PersonTable personList={personList}/>
+        </Col>
+        <Col>
+          <ClassTable classList={classList}/>
+        </Col>
+        <Col>
+          <LectureTable lectureList={lectureList}/>
+        </Col>
+      </Row>
+      <SqlResultsTable/>
+    </Container>
   )
 }
 
