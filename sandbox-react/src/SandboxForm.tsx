@@ -4,22 +4,29 @@ import { FormControl, InputGroup } from 'react-bootstrap';
 import React, { useState, useEffect } from "react"
 
 
+interface NewPerson {
+  id: number | null,
+  name: string,
+  surname: string,
+  dateOfBirth: string,
+  isTeacher: boolean,
+  classId: number | null,
+}
+
 
 const SandboxForm = ({personList, classList}) => {
-  const [selectedPerson, setSelectedPerson] = useState(null)
-  const [isTeacher, setIsTeacher] = useState(false)
-  const [selectedClass, setSelectedClass] = useState("0")
+  const [selectedPerson, setSelectedPerson] = useState<Person>({id: null, name: '', surname: '', dateOfBirth: '', isTeacher: false, classId: null})
+  const [selectedClass, setSelectedClass] = useState<SchoolClass>({id: null, grade: 1, letter: 'A'})
 
-    useEffect(() => {
-      if(selectedPerson!=null) {
-        setIsTeacher(selectedPerson.isTeacher)
-        setSelectedClass(selectedPerson.classId ? selectedPerson.classId.toString() : "0")
-      } else {
-        setIsTeacher(false)
-        setSelectedClass("0")
-      }
 
-    }, [selectedPerson])
+  useEffect(() => {
+    if(selectedPerson!=null) {
+      setSelectedClass(selectedPerson.classId ? selectedPerson.classId.toString() : "0")
+    } else {
+      setSelectedClass("0")
+    }
+
+  }, [selectedPerson])
 
   const getPerson = (personId) => {
     const persons = personList.filter(p => personId === p.id.toString());
@@ -29,7 +36,7 @@ const SandboxForm = ({personList, classList}) => {
     return persons[0];
   }
 
-  const PersonSelect = ({persons}) => <Form.Select value={selectedPerson ? selectedPerson.id.toString() : "0"} size="sm" aria-label="Default select example" 
+  const PersonSelect = (persons:SchoolClass[]) => <Form.Select value={selectedPerson ? selectedPerson.id.toString() : "0"} size="sm" aria-label="Default select example" 
                                         onChange={(e) => setSelectedPerson(getPerson(e.currentTarget.value))}>
                                           <option value="0">New Person</option>
                                           {persons.map(p => 
@@ -52,14 +59,14 @@ const SandboxForm = ({personList, classList}) => {
       <PersonSelect persons={personList}/>
       <Form.Group className="mb-3" controlId="formName">
         <Form.Label>Name</Form.Label>
-        <Form.Control value={selectedPerson ? selectedPerson.name : null} size="sm" type="text" placeholder="Enter name" />
+        <Form.Control value={selectedPerson.name} size="sm" type="text" placeholder="Enter name" onChange={(e) => setSelectedPerson({...selectedPerson, name: e.currentTarget.value})}/>
       </Form.Group>
       <Form.Group className="mb-3" controlId="formSurname">
         <Form.Label>Surname</Form.Label>
-        <Form.Control value={selectedPerson ? selectedPerson.surname : null} size="sm" type="text" placeholder="Enter surname" />
+        <Form.Control value={selectedPerson.surname} size="sm" type="text" placeholder="Enter surname" onChange={(e) => setSelectedPerson({...selectedPerson, surname: e.currentTarget.value})} />
       </Form.Group>
       <ClassSelect classes={classList}/>
-      <InputGroup size="sm" hidden={selectedClass!="0"}>
+      <InputGroup size="sm" hidden={selectedClass.id!=null} className="w-50">
         <InputGroup.Text>Class</InputGroup.Text>
         <Form.Control
           type="number"
@@ -81,7 +88,7 @@ const SandboxForm = ({personList, classList}) => {
         </Form.Control>
       </InputGroup>
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check checked={isTeacher} disabled={selectedPerson!=null} type="switch" label="Is a teacher?" onClick={(e) => setIsTeacher(!isTeacher)}/>
+        <Form.Check checked={selectedPerson.isTeacher} disabled={selectedPerson!=null} type="switch" label="Is a teacher?" onClick={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})}/>
       </Form.Group>
       
       <Button variant="dark" type="submit">
