@@ -1,62 +1,52 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { FormControl, InputGroup } from 'react-bootstrap';
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react";
+import ClassForm, {SchoolClass} from './ClassForm';
+import { NEW_CLASS_ID, NEW_PERSON_ID } from './Constants';
 
-
-interface NewPerson {
-  id: number | null,
+interface Person {
+  id: number,
   name: string,
   surname: string,
   dateOfBirth: string,
   isTeacher: boolean,
-  classId: number | null,
+  classId: number,
 }
 
 
-const SandboxForm = ({personList, classList}) => {
-  const [selectedPerson, setSelectedPerson] = useState<Person>({id: null, name: '', surname: '', dateOfBirth: '', isTeacher: false, classId: null})
-  const [selectedClass, setSelectedClass] = useState<SchoolClass>({id: null, grade: 1, letter: 'A'})
+const SandboxForm = ({personList, classList}: {personList: Person[], classList: SchoolClass[]}) => {
+  
+  const newPerson = {id: NEW_PERSON_ID, name: 'New', surname: 'Person', dateOfBirth: '', isTeacher: false, classId: NEW_CLASS_ID}
+  const persons = [
+    newPerson,
+    ...personList
+  ]
+  const [selectedPerson, setSelectedPerson] = useState<Person>(newPerson)
 
-
-  useEffect(() => {
-    if(selectedPerson!=null) {
-      setSelectedClass(selectedPerson.classId ? selectedPerson.classId.toString() : "0")
+  const onPersonSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const personId = e.currentTarget.value
+    const foundPerson: Person | undefined = persons.find((p) => p.id.toString() === personId)
+    if(!foundPerson) {
+      console.error('No Person found for id [' + personId + '] from ClassSelect')
+      e.currentTarget.value = selectedPerson.id.toString()
     } else {
-      setSelectedClass("0")
+      setSelectedPerson(foundPerson)
     }
-
-  }, [selectedPerson])
-
-  const getPerson = (personId) => {
-    const persons = personList.filter(p => personId === p.id.toString());
-    if(persons.length===0) {
-      return null;
-    }
-    return persons[0];
   }
 
-  const PersonSelect = (persons:SchoolClass[]) => <Form.Select value={selectedPerson ? selectedPerson.id.toString() : "0"} size="sm" aria-label="Default select example" 
-                                        onChange={(e) => setSelectedPerson(getPerson(e.currentTarget.value))}>
-                                          <option value="0">New Person</option>
-                                          {persons.map(p => 
-                                              <option value={p.id}>{p.name} {p.surname}</option>
-                                          )}
-                                      </Form.Select>
-
-  const ClassSelect = ({classes}) => <Form.Select value={selectedClass} 
-                                      size="sm" aria-label="Default select example" 
-                                      onChange={(e)=>setSelectedClass(e.currentTarget.value)}>
-                                        <option value="0">New Classroom</option>
-                                        {classes.map(c =>
-                                          <option value={c.id}>{c.grade}. {c.letter}</option>
-                                          )}
-                                        </Form.Select>
+  const PersonSelect = ({persons}: {persons: Person[]}) => <Form.Select 
+                                                              value={selectedPerson.id.toString()} 
+                                                              size="sm" 
+                                                              onChange={(e) => onPersonSelectChange(e)}>
+                                                                {persons.map(p => 
+                                                                    <option key={p.id} value={p.id}>{p.name} {p.surname}</option>
+                                                                )}
+                                                            </Form.Select>
 
   return (
     <Form>
       <h2>Add Person</h2>
-      <PersonSelect persons={personList}/>
+      <PersonSelect persons={persons}/>
       <Form.Group className="mb-3" controlId="formName">
         <Form.Label>Name</Form.Label>
         <Form.Control value={selectedPerson.name} size="sm" type="text" placeholder="Enter name" onChange={(e) => setSelectedPerson({...selectedPerson, name: e.currentTarget.value})}/>
@@ -65,30 +55,9 @@ const SandboxForm = ({personList, classList}) => {
         <Form.Label>Surname</Form.Label>
         <Form.Control value={selectedPerson.surname} size="sm" type="text" placeholder="Enter surname" onChange={(e) => setSelectedPerson({...selectedPerson, surname: e.currentTarget.value})} />
       </Form.Group>
-      <ClassSelect classes={classList}/>
-      <InputGroup size="sm" hidden={selectedClass.id!=null} className="w-50">
-        <InputGroup.Text>Class</InputGroup.Text>
-        <Form.Control
-          type="number"
-          class="form-control"
-          min="1" step="1" max="12" 
-          placeholder="Year"
-          aria-label="Recipient's username"
-          aria-describedby="basic-addon2"
-        />
-        <InputGroup.Text>.</InputGroup.Text>
-        <Form.Control
-          as="select"
-          placeholder="Letter"
-          aria-label="Recipient's username"
-          aria-describedby="basic-addon2">
-          <option>{"A"}</option>
-          <option>{"B"}</option>
-          <option>{"C"}</option>
-        </Form.Control>
-      </InputGroup>
+      <ClassForm classList={classList} selectedClassId={selectedPerson.classId}/>
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check checked={selectedPerson.isTeacher} disabled={selectedPerson!=null} type="switch" label="Is a teacher?" onClick={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})}/>
+        <Form.Check checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} type="switch" label="Is a teacher?" onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})}/>
       </Form.Group>
       
       <Button variant="dark" type="submit">

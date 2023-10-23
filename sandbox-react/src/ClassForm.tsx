@@ -1,53 +1,53 @@
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { FormControl, InputGroup } from 'react-bootstrap';
-import React, { useState, useEffect } from "react"
-import BsPrefixRefForwardingComponent from 
+import { InputGroup } from 'react-bootstrap';
+import React, { useState } from "react";
+import { NEW_CLASS_ID } from './Constants';
 
 
-interface SchoolClass {
+export interface SchoolClass {
   id: number,
   grade: number,
   letter: string,
   teacherId: number | null
 }
 
-
-const ClassForm = ({classList}) => {
-  const newSchoolClass = {id: -1, grade: 1, letter: 'A', teacherId: null}
+const ClassForm = ({classList, selectedClassId}: {classList: SchoolClass[], selectedClassId: number}) => {
+  const newSchoolClass = {id: NEW_CLASS_ID, grade: 1, letter: 'A', teacherId: null}
   const schoolClasses: SchoolClass[] = [
     newSchoolClass,
-    classList
+    ...classList
   ]
-  const [selectedClass, setSelectedClass] = useState<SchoolClass>(newSchoolClass)
+  const [selectedClass, setSelectedClass] = useState<SchoolClass>(schoolClasses.find((c) => c.id === selectedClassId) ?? newSchoolClass) //TODO this is always set to newSchoolClass
 
   const onClassSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const classId = e.currentTarget.value
-    const foundClass: SchoolClass | undefined = classes.find((c) => c.id.toString() === classId)
+    const foundClass: SchoolClass | undefined = schoolClasses.find((c) => c.id.toString() === classId)
     if(!foundClass) {
       console.error('No SchoolClass found for id [' + classId + '] from ClassSelect')
-      e.currentTarget.value = selectedClass?.id.toString()
+      e.currentTarget.value = selectedClass.id.toString()
     } else {
       setSelectedClass(foundClass)
     }
   }
 
-  const ClassSelect:ReactElement = (classes:SchoolClass[]) => <Form.Select value={selectedClass.id}
-                                      size="sm" aria-label="Default select example" 
-                                      onChange={(e) => onClassSelectChange(e)}>
-                                        <option value="-1">New Classroom</option>
-                                        {classes.map(c =>
-                                          <option value={c.id}>{c.grade}. {c.letter}</option>
-                                          )}
-                                        </Form.Select>
+  const ClassSelect = ({classes}: {classes:SchoolClass[]}) => <Form.Select 
+                                                                value={selectedClass.id}
+                                                                size="sm" 
+                                                                onChange={(e) => onClassSelectChange(e)}>
+                                                                  {classes.map(c =>
+                                                                    <option key={c.id} value={c.id}>{c.id===NEW_CLASS_ID ? 'New Class' : `${c.grade}. ${c.letter}`}</option>
+                                                                    )}
+                                                              </Form.Select>
 
   return (
     <div>
       <ClassSelect classes={schoolClasses}/>
-      <InputGroup size="sm" hidden={selectedClass.id!=null} className="w-50">
+      <InputGroup size="sm" hidden={selectedClass.id!==NEW_CLASS_ID} className="w-50">
         <InputGroup.Text>Class</InputGroup.Text>
         <Form.Control
           type="number"
+          value={selectedClass.grade}
+          onChange={(e) => setSelectedClass({...selectedClass, grade: Number(e.currentTarget.value)})}
           className="form-control"
           min="1" step="1" max="12" 
           placeholder="Year"
@@ -58,6 +58,8 @@ const ClassForm = ({classList}) => {
         <Form.Control
           as="select"
           placeholder="Letter"
+          value={selectedClass.letter}
+          onChange={(e) => setSelectedClass({...selectedClass, letter: e.currentTarget.value})}
           aria-label="Recipient's username"
           aria-describedby="basic-addon2">
           <option>{"A"}</option>
