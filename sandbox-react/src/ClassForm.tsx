@@ -1,23 +1,39 @@
 import Form from 'react-bootstrap/Form';
 import { InputGroup } from 'react-bootstrap';
-import React, { useState } from "react";
-import { NEW_CLASS_ID } from './Constants';
+import React, { useEffect, useState } from "react";
+import { NEW_CLASS_ID, NEW_PERSON_ID } from './Constants';
+import { Person } from './SandboxForm';
 
 
 export interface SchoolClass {
   id: number,
   grade: number,
   letter: string,
-  teacherId: number | null
+  teacherId: number
 }
+export const NEW_CLASS = {id: NEW_CLASS_ID, grade: 1, letter: 'A', teacherId: -1} //TODO not valid if new Person is not a teacher
 
-const ClassForm = ({classList, selectedClassId}: {classList: SchoolClass[], selectedClassId: number}) => {
-  const newSchoolClass = {id: NEW_CLASS_ID, grade: 1, letter: 'A', teacherId: null}
+const ClassForm = ({classList, teachers, personClassId, onClassChange}: {classList: SchoolClass[], teachers: Person[], personClassId: number, onClassChange: any}) => {
+  
   const schoolClasses: SchoolClass[] = [
-    newSchoolClass,
-    ...classList
+    ...classList,
+    NEW_CLASS
   ]
-  const [selectedClass, setSelectedClass] = useState<SchoolClass>(schoolClasses.find((c) => c.id === selectedClassId) ?? newSchoolClass) //TODO this is always set to newSchoolClass
+  const [selectedClass, setSelectedClass] = useState<SchoolClass>(NEW_CLASS)
+
+  function changeSelectedClass(schoolClass: SchoolClass) {
+    onClassChange(schoolClass)
+    setSelectedClass(schoolClass)
+  }
+
+  useEffect (()=> {
+    let initialClass: SchoolClass | undefined = schoolClasses.find((c) => c.id === personClassId)
+    if(!initialClass) {
+      initialClass = NEW_CLASS
+    }
+    
+    changeSelectedClass(initialClass)
+  }, [personClassId])
 
   const onClassSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const classId = e.currentTarget.value
@@ -26,7 +42,15 @@ const ClassForm = ({classList, selectedClassId}: {classList: SchoolClass[], sele
       console.error('No SchoolClass found for id [' + classId + '] from ClassSelect')
       e.currentTarget.value = selectedClass.id.toString()
     } else {
-      setSelectedClass(foundClass)
+      changeSelectedClass(foundClass)
+    }
+  }
+
+  const onTeacherSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if(selectedClass.teacherId===NEW_PERSON_ID) {
+      e.currentTarget.value = NEW_PERSON_ID.toString()
+    } else {
+      changeSelectedClass({...selectedClass, teacherId: Number(e.currentTarget.value)})
     }
   }
 
@@ -42,16 +66,14 @@ const ClassForm = ({classList, selectedClassId}: {classList: SchoolClass[], sele
   return (
     <div>
       <ClassSelect classes={schoolClasses}/>
-      <InputGroup size="sm" hidden={selectedClass.id!==NEW_CLASS_ID} className="w-50">
-        <InputGroup.Text>Class</InputGroup.Text>
+      <InputGroup size="sm" hidden={selectedClass.id!==NEW_CLASS_ID}>
         <Form.Control
           type="number"
           value={selectedClass.grade}
-          onChange={(e) => setSelectedClass({...selectedClass, grade: Number(e.currentTarget.value)})}
+          onChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.currentTarget.value)})}
           className="form-control"
           min="1" step="1" max="12" 
           placeholder="Year"
-          aria-label="Recipient's username"
           aria-describedby="basic-addon2"
         />
         <InputGroup.Text>.</InputGroup.Text>
@@ -59,12 +81,24 @@ const ClassForm = ({classList, selectedClassId}: {classList: SchoolClass[], sele
           as="select"
           placeholder="Letter"
           value={selectedClass.letter}
-          onChange={(e) => setSelectedClass({...selectedClass, letter: e.currentTarget.value})}
-          aria-label="Recipient's username"
+          onChange={(e) => changeSelectedClass({...selectedClass, letter: e.currentTarget.value})}
           aria-describedby="basic-addon2">
+            {/* TODO map from array */}
           <option>{"A"}</option>
           <option>{"B"}</option>
           <option>{"C"}</option>
+        </Form.Control>
+        <InputGroup.Text>Tutor</InputGroup.Text>
+        <Form.Control
+          as="select"
+          placeholder="Tutor"
+          className="w-25"
+          value={selectedClass.teacherId}
+          onChange={(e) => onTeacherSelectChange(e)}
+          aria-describedby="basic-addon2">
+          {teachers.map((t) => 
+            <option key={t.id} value={t.id}>{t.name} {t.surname}</option>
+          )}
         </Form.Control>
       </InputGroup>
     </div>
