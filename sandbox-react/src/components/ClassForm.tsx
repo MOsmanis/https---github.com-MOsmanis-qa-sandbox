@@ -1,7 +1,6 @@
-import Form from 'react-bootstrap/Form';
-import { InputGroup } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import React, { useEffect, useState } from "react";
-import { NEW_CLASS_ID, NEW_PERSON_ID } from './Constants';
+import { NEW_CLASS_ID, NEW_PERSON_ID } from '../Constants';
 import { Person } from './SandboxForm';
 
 

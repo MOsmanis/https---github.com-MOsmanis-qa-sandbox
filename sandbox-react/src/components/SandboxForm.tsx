@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import React, { useState, useEffect } from "react";
 import ClassForm, {SchoolClass, NEW_CLASS} from './ClassForm';
-import { NEW_CLASS_ID, NEW_PERSON_ID } from './Constants';
+import { NEW_CLASS_ID, NEW_PERSON_ID } from '../Constants';
 
 export interface Person {
   id: number,

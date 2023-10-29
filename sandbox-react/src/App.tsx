@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react"
-import PersonTable from './PersonTable'
+import PersonTable from './components/PersonTable'
 import './App.scss'
-import ClassTable from './ClassTable'
-import SqlResultsTable from './SqlResultsTable'
-import LectureTable from './LectureTable'
+import ClassTable from './components/ClassTable'
+import SqlResultsTable from './components/SqlResultsTable'
+import LectureTable from './components/LectureTable'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import SandboxForm from './SandboxForm'
+import SandboxForm from './components/SandboxForm'
 
 //TODO Add ChatGPT https://platform.openai.com/docs/quickstart?context=node
 const App = () => {
@@ -64,7 +64,8 @@ const App = () => {
     <Container fluid>
       <Row>
         <Col>
-          <SandboxForm personList={personList} classList={classList}/>
+        {/* TODO onChange update table lists */}
+          <SandboxForm personList={personList} classList={classList}/> 
         </Col>
         <Col>
           <PersonTable personList={personList}/>
