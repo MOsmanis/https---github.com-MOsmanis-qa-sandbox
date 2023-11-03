@@ -1,14 +1,9 @@
 package qa.learning.sandbox;
 
-import jakarta.persistence.Tuple;
-import jakarta.persistence.TupleElement;
-import net.sf.jsqlparser.parser.CCJSqlParserUtil;
-import net.sf.jsqlparser.statement.Statement;
-import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.util.validation.Validation;
 import net.sf.jsqlparser.util.validation.ValidationError;
 import net.sf.jsqlparser.util.validation.feature.DatabaseType;
-import net.sf.jsqlparser.util.validation.feature.FeaturesAllowed;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +16,6 @@ import qa.learning.sandbox.jpa.SchoolClass;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -72,7 +66,7 @@ public class SandboxController {
     {
         String sql = request.getSqlQuery();
         List<ValidationError> validationErrors = new Validation(
-            Arrays.asList(DatabaseType.MYSQL, FeaturesAllowed.SELECT),
+            Arrays.asList(DatabaseType.MYSQL),
             sql).validate();
         if(!validationErrors.isEmpty()) {
             return validationErrors.stream()
@@ -81,7 +75,11 @@ public class SandboxController {
                 .map(List::of)
                 .toList();
         }
-        return sandboxService.getRawSqlResults(sql);
+        try {
+            return sandboxService.getRawSqlResults(sql);
+        } catch(SQLGrammarException e) {
+            return List.of(List.of(e.getMessage()));
+        }
     }
 
     private static class SqlDto {

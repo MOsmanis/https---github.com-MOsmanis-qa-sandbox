@@ -65,7 +65,7 @@ const App = () => {
       <Row>
         <Col>
         {/* TODO onChange update table lists */}
-          <SandboxForm personList={personList} classList={classList}/> 
+        <SandboxForm personList={personList} classList={classList}/> 
         </Col>
         <Col>
           <PersonTable personList={personList}/>

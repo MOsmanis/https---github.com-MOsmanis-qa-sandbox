@@ -7,7 +7,6 @@ import org.hibernate.query.IllegalQueryOperationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class SandboxDao  {
         this.entityManager = entityManager;
     }
 
-    public List<Tuple> executeRawSQL(String sql) throws IllegalQueryOperationException, TypeMismatchException,
+    public List<Tuple> executeRawSelect(String sql) throws IllegalQueryOperationException, TypeMismatchException,
         HibernateException
     {
         Query query = entityManager.createNativeQuery(sql, Tuple.class);
@@ -31,5 +30,11 @@ public class SandboxDao  {
             return new ArrayList<>();
         }
         return resultList;
+    }
+
+    public int executeRawUpdate(String sql) throws HibernateException
+    {
+        Query query = entityManager.createNativeQuery(sql, Tuple.class);
+        return query.executeUpdate();
     }
 }

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
 
-const SqlResultsTable = () => {
+const SqlResultsTable = ({onQuerySubmit} : {onQuerySubmit: any}) => {
     const [sql, setSql] = useState("")
     const [sqlList, setSqlList] = useState<string[][]>([])
 
@@ -21,6 +21,7 @@ const SqlResultsTable = () => {
                     setSqlList([[data.error]])
                 } else {
                     setSqlList(data)
+                    onQuerySubmit()
                 }
             });
         }

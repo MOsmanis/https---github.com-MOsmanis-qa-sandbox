@@ -5,17 +5,6 @@ const PersonTable = ({personList}) => {
     return (
         <div>
         <h2>person</h2>
-        {/* <Table striped bordered hover variant="dark" size="sm">
-        <thead>
-                <tr>
-                    <th>id</th>
-                    <th>name</th>
-                    <th>surname</th>
-                    <th>class_id</th>
-                    <th>is_teacher</th>
-                </tr>
-            </thead>
-        </Table> */}
         <div style={{ height: '500px', overflowY: 'auto', border: '1' }} >
         <Table striped bordered hover variant="dark" size="sm">
             <thead>
