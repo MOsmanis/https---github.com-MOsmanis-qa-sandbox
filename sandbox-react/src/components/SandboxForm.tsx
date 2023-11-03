@@ -14,7 +14,7 @@ export interface Person {
 }
 
 
-const SandboxForm = ({personList, classList}: {personList: Person[], classList: SchoolClass[]}) => {
+const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[], classList: SchoolClass[], onSubmitPost: any}) => {
   const NEW_PERSON = {id: NEW_PERSON_ID, name: 'New', surname: 'Person', dateOfBirth: '', isTeacher: false, classId: NEW_CLASS_ID}
   const persons = [
     NEW_PERSON,
@@ -49,8 +49,26 @@ const SandboxForm = ({personList, classList}: {personList: Person[], classList: 
 
   const onSubmitLog = (event: React.FormEvent<HTMLFormElement>) => { 
     event.preventDefault();
-    console.log(selectedClass)
-    console.log(selectedPerson)
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(selectedClass)
+    };
+    fetch('http://localhost:8080/classes/add', requestOptions)
+    .then(response => response.json())
+    .then(data => {
+        const options = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({...selectedPerson, classId: data})
+        };
+        fetch('http://localhost:8080/persons/add', options)
+          .then(response => {
+            console.log(response); 
+            onSubmitPost();
+          });
+      })
+    
   }
 
   const PersonSelect = ({persons}: {persons: Person[]}) => <Form.Select 

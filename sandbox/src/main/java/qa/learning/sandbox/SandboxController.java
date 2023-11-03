@@ -37,7 +37,6 @@ public class SandboxController {
         this.sandboxService = sandboxService;
     }
 
-    @CrossOrigin(origins="http://localhost:5173")
     @GetMapping("/persons")
     @ResponseStatus(HttpStatus.OK)
     public List<Person> getPersons() throws Exception
@@ -94,5 +93,22 @@ public class SandboxController {
         {
             this.sqlQuery = sqlQuery;
         }
+    }
+
+    @RequestMapping(value = "/persons/add", method = POST, consumes = APPLICATION_JSON_VALUE, produces =
+        APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public void createPerson(@RequestBody Person person) throws Exception
+    {
+        personDao.save(person);
+    }
+
+    @RequestMapping(value = "/classes/add", method = POST, consumes = APPLICATION_JSON_VALUE, produces =
+        APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public Long createClass(@RequestBody SchoolClass schoolClass) throws Exception
+    {
+        SchoolClass savedClass = schoolClassDao.save(schoolClass);
+        return savedClass.getId();
     }
 }
