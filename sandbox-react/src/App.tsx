@@ -12,26 +12,21 @@ import SandboxForm from './components/SandboxForm'
 //TODO Add ChatGPT https://platform.openai.com/docs/quickstart?context=node
 const App = () => {
   const [personList, setPersonList] = useState([])
-  useEffect(() => {
-      getPersonList()
-      getClassList()
-      getLectureList()
-    }, [])
-  const getPersonList = () => {
-      fetch("http://localhost:8080/persons")
-          .then(res => res.json())
-          .then(
-              (result) => {                    
-                  setPersonList(result)
-              },
-              (error) => {
-                  setPersonList([]);
-                  console.log(error)
-              }
-          )
+  const getPersonList = async () => {
+    fetch("http://localhost:8080/persons")
+    .then(res => res.json())
+    .then(
+        (result) => {                    
+          setPersonList(result)
+        },
+        (error) => {
+          console.log(error)
+          setPersonList([])
+        }
+    )
   }
   const [classList, setClassList] = useState([])
-  const getClassList = () => {
+  const getClassList = async () => {
       fetch("http://localhost:8080/classes")
           .then(res => res.json())
           .then(
@@ -45,7 +40,7 @@ const App = () => {
           )
   }
   const [lectureList, setLectureList] = useState([])
-  const getLectureList = () => {
+  const getLectureList = async () => {
       fetch("http://localhost:8080/lectures")
           .then(res => res.json())
           .then(
@@ -57,6 +52,17 @@ const App = () => {
                   console.log(error)
               }
           )
+  }
+  useEffect(() => {
+    getPersonList()
+    getClassList()
+    getLectureList()
+  }, [])
+
+  const onQuerySubmit = async () => {
+    getPersonList()
+    getClassList()
+    getLectureList()   
   }
 
 
@@ -77,7 +83,7 @@ const App = () => {
           <LectureTable lectureList={lectureList}/>
         </Col>
       </Row>
-      <SqlResultsTable/>
+      <SqlResultsTable onQuerySubmit={onQuerySubmit}/>
     </Container>
   )
 }
