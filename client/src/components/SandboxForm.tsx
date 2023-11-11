@@ -96,7 +96,7 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
       </Form.Group>
       <ClassForm classList={classList} personClassId={selectedPerson.classId} teachers={teachers} onClassChange={setSelectedClass}/>
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} type="switch" label="Is a teacher?" onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})}/>
+        <Form.Check checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} type="switch" label="Teacher" onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})}/>
       </Form.Group>
       
       <Button variant="dark" type="submit">
