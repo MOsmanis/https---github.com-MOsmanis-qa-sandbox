@@ -1,8 +1,10 @@
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
+import { Button } from 'primereact/button';       
 import Form from 'react-bootstrap/Form';
 import React, { useState, useEffect } from "react";
 import ClassForm, {SchoolClass, NEW_CLASS} from './ClassForm';
 import { NEW_CLASS_ID, NEW_PERSON_ID } from '../Constants';
+import { TERipple } from "tw-elements-react";
 
 export interface Person {
   id: number,
@@ -98,10 +100,11 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
       <Form.Group className="mb-3" controlId="formBasicCheckbox">
         <Form.Check checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} type="switch" label="Teacher" onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})}/>
       </Form.Group>
-      
-      <Button variant="dark" type="submit">
-        Submit
-      </Button>
+      <TERipple rippleColor='light'>  
+        <Button>
+          Submit
+        </Button>
+      </TERipple>
     </Form>
   );
 }

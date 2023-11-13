@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react"
 import PersonTable from './components/PersonTable'
-import './App.scss'
 import ClassTable from './components/ClassTable'
 import SqlResultsTable from './components/SqlResultsTable'
 import LectureTable from './components/LectureTable'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import SandboxForm from './components/SandboxForm'
+import SandboxForm from './components/SandboxForm';
+import { PrimeReactProvider } from 'primereact/api';
+import { Panel } from "primereact/panel"
+import 'primereact/resources/themes/md-light-indigo/theme.css';
+import 'primeflex/primeflex.css';
+
 
 //TODO Add ChatGPT https://platform.openai.com/docs/quickstart?context=node
 const App = () => {
@@ -66,25 +67,26 @@ const App = () => {
   }
 
 
+
   return (
-    <Container fluid>
-      <Row>
-        <Col>
-        {/* TODO onChange update table lists */}
-        <SandboxForm personList={personList} classList={classList} onSubmitPost={onQuerySubmit}/> 
-        </Col>
-        <Col>
-          <PersonTable personList={personList}/>
-        </Col>
-        <Col>
-          <ClassTable classList={classList}/>
-        </Col>
-        <Col>
-          <LectureTable lectureList={lectureList}/>
-        </Col>
-      </Row>
-      <SqlResultsTable onQuerySubmit={onQuerySubmit}/>
-    </Container>
+    <PrimeReactProvider>
+          <div className="grid">
+          {/* TODO onChange update table lists */}
+            <Panel header="person" className="col" style={{maxWidth: '25rem'}}>
+              <SandboxForm className="col" personList={personList} classList={classList} onSubmitPost={onQuerySubmit}/> 
+            </Panel>
+            <Panel header="person" className="col" style={{maxWidth: '25rem'}}>
+              <PersonTable personList={personList}/>
+            </Panel>
+            <Panel header="school_class" className="col" style={{maxWidth: '25rem'}}>
+              <ClassTable classList={classList}/>
+            </Panel>
+            <Panel className="col" header="lecture">
+              <LectureTable lectureList={lectureList}/>
+            </Panel>
+          </div>
+          <SqlResultsTable onQuerySubmit={onQuerySubmit}/>
+    </PrimeReactProvider>
   )
 }
 
