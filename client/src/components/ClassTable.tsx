@@ -1,29 +1,17 @@
-import Table from "react-bootstrap/Table"
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 const ClassTable = ({classList}) => {
     if (!classList) return (<div>No Record Found</div>)
-    return (<div>
-        <h2>school_class</h2>
-        <Table striped bordered hover variant="dark" size="sm">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>grade</th>
-                    <th>letter</th>
-                    <th>teacher_id</th>
-                </tr>
-            </thead>
-            <tbody>
-                {classList.map(p => (
-                    <tr key={p.id}>
-                        <td>{p.id}</td>
-                        <td>{p.grade}</td>
-                        <td>{p.letter}</td>
-                        <td>{p.teacherId}</td>
-                    </tr>
-                ))}
-            </tbody>
-        </Table>
-    </div>)
+    return (
+                <DataTable value={classList} resizableColumns showGridlines paginator rows={5} size={'medium'}
+                paginatorTemplate="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+                currentPageReportTemplate="{first} to {last} of {totalRecords}">
+                    <Column field="id" header="id" style={{ width: '10%' }}></Column>
+                    <Column field="grade" header="grade" style={{ width: '30%' }}></Column>
+                    <Column field="letter" header="letter" style={{ width: '30%' }}></Column>
+                    <Column field="teacherId" header="teacher_id" style={{ width: '30%' }}></Column>
+    
+                </DataTable>)
 }
 export default ClassTable;
