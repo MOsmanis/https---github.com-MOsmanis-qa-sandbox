@@ -1,10 +1,11 @@
 // import Button from 'react-bootstrap/Button';
 import { Button } from 'primereact/button';       
-import Form from 'react-bootstrap/Form';
+
 import React, { useState, useEffect } from "react";
 import ClassForm, {SchoolClass, NEW_CLASS} from './ClassForm';
+import { DropdownChangeEvent } from 'primereact/dropdown';
 import { NEW_CLASS_ID, NEW_PERSON_ID } from '../Constants';
-import { TERipple } from "tw-elements-react";
+import { Dropdown } from 'primereact/dropdown';
 
 export interface Person {
   id: number,
@@ -39,17 +40,17 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
   },[selectedClass])
 
   const onPersonSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const personId = e.currentTarget.value
+    const personId = e.value
     const foundPerson: Person | undefined = persons.find((p) => p.id.toString() === personId)
     if(!foundPerson) {
       console.error('No Person found for id [' + personId + '] from ClassSelect')
-      e.currentTarget.value = selectedPerson.id.toString()
+      e.value = selectedPerson.id.toString()
     } else {
       setSelectedPerson(foundPerson)
     }
   }
 
-  const onSubmitLog = (event: React.FormEvent<HTMLFormElement>) => { 
+  const onSubmitLog = (event: DropdownChangeEvent) => { 
     event.preventDefault();
     const requestOptions = {
       method: 'POST',
@@ -83,10 +84,14 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
                                                             </Form.Select>
 
   return (
-    <Form onSubmit={onSubmitLog}>
+    // <Form onSubmit={onSubmitLog}>
+    <div>
       <h2>Add Person</h2>
-      <PersonSelect persons={persons}/>
-      <Form.Group className="mb-3" controlId="formName">
+      {/* <PersonSelect persons={persons}/> */}
+      
+      <Dropdown value={selectedPerson} onChange={(e) => onPersonSelectChange(e)} options={persons} optionLabel="name" placeholder="Select a Country" 
+    filter className="w-full md:w-14rem" />
+      {/* <Form.Group className="mb-3" controlId="formName">
         <Form.Label>Name</Form.Label>
         <Form.Control value={selectedPerson.name} size="sm" type="text" placeholder="Enter name" 
         onChange={(e) => setSelectedPerson({...selectedPerson, name: e.currentTarget.value})}/>
@@ -104,8 +109,9 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
         <Button>
           Submit
         </Button>
-      </TERipple>
-    </Form>
+      </TERipple> */}
+    {/* </Form> */}
+    </div>
   );
 }
 
