@@ -1,6 +1,7 @@
 // import Button from 'react-bootstrap/Button';
-import { Button } from 'primereact/button';       
-
+import { Button } from 'primereact/button';     
+import { InputText } from 'primereact/inputtext';  
+import { InputSwitch } from 'primereact/inputswitch';
 import React, { useState, useEffect } from "react";
 import ClassForm, {SchoolClass, NEW_CLASS} from './ClassForm';
 import { DropdownChangeEvent } from 'primereact/dropdown';
@@ -39,18 +40,7 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
     setSelectedPerson((s):Person => {return {...s, classId: selectedClass.id}})
   },[selectedClass])
 
-  const onPersonSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const personId = e.value
-    const foundPerson: Person | undefined = persons.find((p) => p.id.toString() === personId)
-    if(!foundPerson) {
-      console.error('No Person found for id [' + personId + '] from ClassSelect')
-      e.value = selectedPerson.id.toString()
-    } else {
-      setSelectedPerson(foundPerson)
-    }
-  }
-
-  const onSubmitLog = (event: DropdownChangeEvent) => { 
+  const onSubmitLog = (event: any) => { 
     event.preventDefault();
     const requestOptions = {
       method: 'POST',
@@ -74,23 +64,18 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
     
   }
 
-  const PersonSelect = ({persons}: {persons: Person[]}) => <Form.Select 
-                                                              value={selectedPerson.id.toString()} 
-                                                              size="sm" 
-                                                              onChange={(e) => onPersonSelectChange(e)}>
-                                                                {persons.map(p => 
-                                                                    <option key={p.id} value={p.id}>{p.name} {p.surname}</option>
-                                                                )}
-                                                            </Form.Select>
-
   return (
     // <Form onSubmit={onSubmitLog}>
-    <div>
+    <div className="p-inputtext-sm">
       <h2>Add Person</h2>
       {/* <PersonSelect persons={persons}/> */}
       
-      <Dropdown value={selectedPerson} onChange={(e) => onPersonSelectChange(e)} options={persons} optionLabel="name" placeholder="Select a Country" 
+      <Dropdown value={selectedPerson} onChange={(e) => setSelectedPerson(e.value)} options={persons} optionLabel="name" placeholder="Select a person" 
     filter className="w-full md:w-14rem" />
+      <InputText placeholder="Enter name" value={selectedPerson.name} onChange={(e) => setSelectedPerson({...selectedPerson, name: e.currentTarget.value})}/>
+      <InputText placeholder="Enter surname" value={selectedPerson.surname} onChange={(e) => setSelectedPerson({...selectedPerson, surname: e.currentTarget.value})}/>
+      <label htmlFor="isTeacherSwitch" className="font-bold mb-2">Teacher</label>
+      <InputSwitch id="isTeacherSwitch" checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})} />
       {/* <Form.Group className="mb-3" controlId="formName">
         <Form.Label>Name</Form.Label>
         <Form.Control value={selectedPerson.name} size="sm" type="text" placeholder="Enter name" 
