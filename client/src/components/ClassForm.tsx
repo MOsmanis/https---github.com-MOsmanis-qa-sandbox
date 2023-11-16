@@ -1,23 +1,26 @@
-import { Form, InputGroup } from 'react-bootstrap';
 import React, { useEffect, useState } from "react";
 import { NEW_CLASS_ID, NEW_PERSON_ID } from '../Constants';
 import { Person } from './SandboxForm';
-
+import { Dropdown } from "primereact/dropdown";
+import { InputNumber } from "primereact/inputnumber";
 
 export interface SchoolClass {
   id: number,
   grade: number,
   letter: string,
-  teacherId: number
+  teacherId: number,
+  label: string,
 }
-export const NEW_CLASS = {id: NEW_CLASS_ID, grade: 1, letter: 'A', teacherId: -1} //TODO not valid if new Person is not a teacher
+
+export const NEW_CLASS = {id: NEW_CLASS_ID, grade: 1, letter: 'A', teacherId: -1, label: 'New Class'} //TODO not valid if new Person is not a teacher
+export const CLASS_LETTERS = ['A', 'B', 'C', 'D']
 
 const ClassForm = ({classList, teachers, personClassId, onClassChange}: {classList: SchoolClass[], teachers: Person[], personClassId: number, onClassChange: any}) => {
   
   const schoolClasses: SchoolClass[] = [
-    ...classList,
-    NEW_CLASS
-  ]
+    NEW_CLASS,
+    ...classList.map(c => {return {...c, label: `${c.grade}.${c.letter}`}}), //TODO remove once saved in DB
+  ]//TODO sorting by grade,letter - can be testable bug
   const [selectedClass, setSelectedClass] = useState<SchoolClass>(NEW_CLASS)
 
   function changeSelectedClass(schoolClass: SchoolClass) {
@@ -53,53 +56,16 @@ const ClassForm = ({classList, teachers, personClassId, onClassChange}: {classLi
     }
   }
 
-  const ClassSelect = ({classes}: {classes:SchoolClass[]}) => <Form.Select 
-                                                                value={selectedClass.id}
-                                                                size="sm" 
-                                                                onChange={(e) => onClassSelectChange(e)}>
-                                                                  {classes.map(c =>
-                                                                    <option key={c.id} value={c.id}>{c.id===NEW_CLASS_ID ? 'New Class' : `${c.grade}. ${c.letter}`}</option>
-                                                                    )}
-                                                              </Form.Select>
-
   return (
-    <div>
-      <ClassSelect classes={schoolClasses}/>
-      <InputGroup size="sm" hidden={selectedClass.id!==NEW_CLASS_ID}>
-        <Form.Control
-          type="number"
-          value={selectedClass.grade}
-          onChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.currentTarget.value)})}
-          className="form-control"
-          min="1" step="1" max="12" 
-          placeholder="Year"
-          aria-describedby="basic-addon2"
-        />
-        <InputGroup.Text>.</InputGroup.Text>
-        <Form.Control
-          as="select"
-          placeholder="Letter"
-          value={selectedClass.letter}
-          onChange={(e) => changeSelectedClass({...selectedClass, letter: e.currentTarget.value})}
-          aria-describedby="basic-addon2">
-            {/* TODO map from array */}
-          <option>{"A"}</option>
-          <option>{"B"}</option>
-          <option>{"C"}</option>
-        </Form.Control>
-        <InputGroup.Text>Tutor</InputGroup.Text>
-        <Form.Control
-          as="select"
-          placeholder="Tutor"
-          className="w-25"
-          value={selectedClass.teacherId}
-          onChange={(e) => onTeacherSelectChange(e)}
-          aria-describedby="basic-addon2">
-          {teachers.map((t) => 
-            <option key={t.id} value={t.id}>{t.name} {t.surname}</option>
-          )}
-        </Form.Control>
-      </InputGroup>
+    <div className="mt-2">
+      <Dropdown value={selectedClass} onChange={(e) => changeSelectedClass(e.value)} options={schoolClasses} optionLabel="label" placeholder="Select a class" filter
+       className="w-full md:w-14rem" />
+       <div hidden={selectedClass.id!==NEW_CLASS_ID}>
+        <InputNumber  value={selectedClass.grade} onValueChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.value)})} mode="decimal" 
+        showButtons min={1} max={12} className=""/>
+        <Dropdown value={selectedClass.letter} onChange={(e) => changeSelectedClass({...selectedClass, letter: e.value})} options={CLASS_LETTERS} placeholder="Select a class" filter
+       className="" />
+       </div>
     </div>
   );
 }
