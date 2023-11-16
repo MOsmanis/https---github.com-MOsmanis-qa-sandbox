@@ -3,14 +3,15 @@ import PersonTable from './components/PersonTable'
 import ClassTable from './components/ClassTable'
 import SqlResultsTable from './components/SqlResultsTable'
 import LectureTable from './components/LectureTable'
-import SandboxForm from './components/SandboxForm';
-import { PrimeReactProvider } from 'primereact/api';
+import SandboxForm from './components/SandboxForm'
+import { PrimeReactProvider } from 'primereact/api'
 import { Panel } from "primereact/panel"
-import 'primereact/resources/themes/md-light-indigo/theme.css';
-import 'primeflex/primeflex.css';
+import 'primereact/resources/themes/md-light-indigo/theme.css'
+import 'primeflex/primeflex.css'
 
 
 //TODO Add ChatGPT https://platform.openai.com/docs/quickstart?context=node
+//TODO add purgeCSS https://purgecss.com/
 const App = () => {
   const [personList, setPersonList] = useState([])
   const getPersonList = async () => {
@@ -71,9 +72,8 @@ const App = () => {
   return (
     <PrimeReactProvider>
           <div className="grid">
-          {/* TODO onChange update table lists */}
-            <Panel header="person" className="col" style={{maxWidth: '25rem'}}>
-              <SandboxForm className="col" personList={personList} classList={classList} onSubmitPost={onQuerySubmit}/> 
+            <Panel className="col" style={{minWidth: '10rem'}}>
+              <SandboxForm personList={personList} classList={classList} onSubmitPost={onQuerySubmit}/> 
             </Panel>
             <Panel header="person" className="col" style={{maxWidth: '25rem'}}>
               <PersonTable personList={personList}/>
