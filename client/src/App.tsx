@@ -71,7 +71,7 @@ const App = () => {
 
   return (
     <PrimeReactProvider>
-          <div className="grid">
+          <div className="grid bg-yellow-100">
             <Panel className="col" style={{minWidth: '10rem'}}>
               <SandboxForm personList={personList} classList={classList} onSubmitPost={onQuerySubmit}/> 
             </Panel>

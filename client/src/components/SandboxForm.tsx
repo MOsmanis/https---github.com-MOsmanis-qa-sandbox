@@ -1,10 +1,7 @@
-// import Button from 'react-bootstrap/Button';
-import { Button } from 'primereact/button';     
 import { InputText } from 'primereact/inputtext';  
 import { InputSwitch } from 'primereact/inputswitch';
 import React, { useState, useEffect } from "react";
 import ClassForm, {SchoolClass, NEW_CLASS} from './ClassForm';
-import { DropdownChangeEvent } from 'primereact/dropdown';
 import { NEW_CLASS_ID, NEW_PERSON_ID } from '../Constants';
 import { Dropdown } from 'primereact/dropdown';
 
@@ -65,10 +62,10 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
   }
 
   return (
-    // <Form onSubmit={onSubmitLog}>
-    <div className="p-inputtext-sm">
+    //TODO background color to bg-yellow-50
+    <div className="p-inputtext-sm ">
+
       <h2>Add Person</h2>
-      {/* <PersonSelect persons={persons}/> */}
       
       <Dropdown value={selectedPerson} onChange={(e) => setSelectedPerson(e.value)} options={persons} optionLabel="name" placeholder="Select a person" filter
        className="w-full md:w-14rem" />
@@ -81,26 +78,7 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
       <InputSwitch id="isTeacherSwitch" checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})} 
       className=''/>
       </div>
-      {/* <Form.Group className="mb-3" controlId="formName">
-        <Form.Label>Name</Form.Label>
-        <Form.Control value={selectedPerson.name} size="sm" type="text" placeholder="Enter name" 
-        onChange={(e) => setSelectedPerson({...selectedPerson, name: e.currentTarget.value})}/>
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formSurname">
-        <Form.Label>Surname</Form.Label>
-        <Form.Control value={selectedPerson.surname} size="sm" type="text" placeholder="Enter surname" 
-        onChange={(e) => setSelectedPerson({...selectedPerson, surname: e.currentTarget.value})} />
-      </Form.Group>
       <ClassForm classList={classList} personClassId={selectedPerson.classId} teachers={teachers} onClassChange={setSelectedClass}/>
-      <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} type="switch" label="Teacher" onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})}/>
-      </Form.Group>
-      <TERipple rippleColor='light'>  
-        <Button>
-          Submit
-        </Button>
-      </TERipple> */}
-    {/* </Form> */}
     </div>
   );
 }

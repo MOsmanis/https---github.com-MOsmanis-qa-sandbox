@@ -58,13 +58,12 @@ const ClassForm = ({classList, teachers, personClassId, onClassChange}: {classLi
 
   return (
     <div className="mt-2">
-      <Dropdown value={selectedClass} onChange={(e) => changeSelectedClass(e.value)} options={schoolClasses} optionLabel="label" placeholder="Select a class" filter
-       className="w-full md:w-14rem" />
+      <Dropdown value={selectedClass} onChange={(e) => changeSelectedClass(e.value)} options={schoolClasses} optionLabel="label" placeholder="Select a class" filter/>
        <div hidden={selectedClass.id!==NEW_CLASS_ID}>
-        <InputNumber  value={selectedClass.grade} onValueChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.value)})} mode="decimal" 
-        showButtons min={1} max={12} className=""/>
-        <Dropdown value={selectedClass.letter} onChange={(e) => changeSelectedClass({...selectedClass, letter: e.value})} options={CLASS_LETTERS} placeholder="Select a class" filter
-       className="" />
+          <InputNumber  value={selectedClass.grade} onValueChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.value)})}
+          showButtons min={1} max={12} inputStyle={{width:"3rem"}} decrementButtonClassName="bg-blue-200"  incrementButtonClassName="bg-blue-200" />
+          <Dropdown value={selectedClass.letter} onChange={(e) => changeSelectedClass({...selectedClass, letter: e.value})} options={CLASS_LETTERS} placeholder="Select a class" filter
+          className="w-5rem" />
        </div>
     </div>
   );
