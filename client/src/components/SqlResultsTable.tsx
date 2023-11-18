@@ -1,6 +1,4 @@
 import React, { useState } from "react"
-import Form from 'react-bootstrap/Form';
-import Table from 'react-bootstrap/Table';
 
 const SqlResultsTable = ({onQuerySubmit} : {onQuerySubmit: any}) => {
     const [sql, setSql] = useState("")
@@ -29,7 +27,7 @@ const SqlResultsTable = ({onQuerySubmit} : {onQuerySubmit: any}) => {
         
             
     return (<div>
-        <Form onSubmit={submitForm}>
+        {/* <Form onSubmit={submitForm}>
             <Form.Group className="mb-3" controlId="formSurname">
             <Form.Control className="text-center" value={sql} size="sm" type="text"
             //  as="textarea" 
@@ -47,7 +45,7 @@ const SqlResultsTable = ({onQuerySubmit} : {onQuerySubmit: any}) => {
                 </tr>
                 )})}
             </tbody>
-        </Table>
+        </Table> */}
     </div>)
 }
 export default SqlResultsTable;
