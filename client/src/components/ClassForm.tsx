@@ -61,9 +61,10 @@ const ClassForm = ({classList, teachers, personClassId, onClassChange}: {classLi
       <Dropdown value={selectedClass} onChange={(e) => changeSelectedClass(e.value)} options={schoolClasses} optionLabel="label" placeholder="Select a class" filter/>
        <div hidden={selectedClass.id!==NEW_CLASS_ID} className="p-inputgroup flex-1">
           <InputNumber  value={selectedClass.grade} onValueChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.value)})}
-          showButtons min={1} max={12} inputStyle={{width:"3rem",marginLeft:"2rem",height:"4rem"}} 
+          showButtons min={1} max={12} inputStyle={{width:"3rem",marginLeft:"2rem",height:"4rem",fontSize:"1.5rem"}} 
           incrementButtonClassName="bg-blue-200 absolute left-0 ml-4 w-2rem h-2rem" incrementButtonIcon=""
-          decrementButtonClassName="bg-blue-200 absolute left-0 mt-5 ml-4 w-2rem h-2rem" decrementButtonIcon=""/>
+          decrementButtonClassName="bg-blue-200 absolute left-0 mt-5 ml-4 w-2rem h-2rem" decrementButtonIcon=""/> 
+          {/* border-top-left-radius for buttons */}
           <span className="p-inputgroup-addon">.</span>
           <Dropdown value={selectedClass.letter} onChange={(e) => changeSelectedClass({...selectedClass, letter: e.value})} options={CLASS_LETTERS} placeholder="Select a class" filter
           className="w-5rem" />
