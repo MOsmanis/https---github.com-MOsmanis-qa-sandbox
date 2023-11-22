@@ -37,17 +37,6 @@ const ClassForm = ({classList, teachers, personClassId, onClassChange}: {classLi
     changeSelectedClass(initialClass)
   }, [personClassId])
 
-  const onClassSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const classId = e.currentTarget.value
-    const foundClass: SchoolClass | undefined = schoolClasses.find((c) => c.id.toString() === classId)
-    if(!foundClass) {
-      console.error('No SchoolClass found for id [' + classId + '] from ClassSelect')
-      e.currentTarget.value = selectedClass.id.toString()
-    } else {
-      changeSelectedClass(foundClass)
-    }
-  }
-
   const onTeacherSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if(selectedClass.teacherId===NEW_PERSON_ID) {
       e.currentTarget.value = NEW_PERSON_ID.toString()
@@ -56,21 +45,48 @@ const ClassForm = ({classList, teachers, personClassId, onClassChange}: {classLi
     }
   }
 
+  const letterTemplate = (option, props) => {
+    if (option) {
+        return (
+            <div className="text-center p-2 text-3xl w-1rem">
+                {option}
+            </div>
+        );
+    }
+  }
+
   return (
     <div className="mt-2">
       <Dropdown value={selectedClass} onChange={(e) => changeSelectedClass(e.value)} options={schoolClasses} optionLabel="label" placeholder="Select a class" filter/>
-       <div hidden={selectedClass.id!==NEW_CLASS_ID} className="p-inputgroup flex-1">
+       <div hidden={selectedClass.id!==NEW_CLASS_ID} className="p-inputgroup mt-2 w-12rem">
           <InputNumber  value={selectedClass.grade} onValueChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.value)})}
-          showButtons min={1} max={12} inputStyle={{width:"3rem",marginLeft:"2rem",height:"4rem",fontSize:"1.5rem"}} 
-          incrementButtonClassName="bg-blue-200 absolute left-0 ml-4 w-2rem h-2rem" incrementButtonIcon=""
-          decrementButtonClassName="bg-blue-200 absolute left-0 mt-5 ml-4 w-2rem h-2rem" decrementButtonIcon=""/> 
-          {/* border-top-left-radius for buttons */}
-          <span className="p-inputgroup-addon">.</span>
-          <Dropdown value={selectedClass.letter} onChange={(e) => changeSelectedClass({...selectedClass, letter: e.value})} options={CLASS_LETTERS} placeholder="Select a class" filter
-          className="w-5rem" />
+          showButtons min={1} max={12} 
+          style={{maxWidth:"5rem",minWidth:"5rem"}}
+          inputClassName="focus:shadow-none focus:surface-border text-center"
+          inputStyle={{marginLeft:"2rem",height:"4rem",fontSize:"1.5rem",caretColor:"transparent"}} 
+          incrementButtonClassName="bg-blue-200 absolute left-0 ml-4 w-2rem h-2rem border-round-top-sm"
+          decrementButtonClassName="bg-blue-200 absolute left-0 mt-5 ml-4 w-2rem h-2rem border-round-bottom-sm"/> 
+          <span className="p-inputgroup-addon w-1rem" style={{justifyContent:"left"}}>.</span>
+          <Dropdown value={selectedClass.letter} onChange={(e) => changeSelectedClass({...selectedClass, letter: e.value})} 
+           valueTemplate={letterTemplate}
+           options={CLASS_LETTERS} placeholder="Letter" panelClassName="text-2xl active:shadow-none focus:shadow-none focus:surface-border active:surface-border" 
+           className="w-2rem active:shadow-none focus:shadow-none focus:surface-border active:surface-border" />
        </div>
     </div>
   );
 }
+{/* TODO add teacher field 
+<InputGroup.Text>Tutor</InputGroup.Text>
+        <Form.Control
+          as="select"
+          placeholder="Tutor"
+          className="w-25"
+          value={selectedClass.teacherId}
+          onChange={(e) => onTeacherSelectChange(e)}
+          aria-describedby="basic-addon2">
+          {teachers.map((t) => 
+            <option key={t.id} value={t.id}>{t.name} {t.surname}</option>
+          )}
+        </Form.Control> */}
 
 export default ClassForm;
