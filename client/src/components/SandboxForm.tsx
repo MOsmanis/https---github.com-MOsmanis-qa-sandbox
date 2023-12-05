@@ -58,23 +58,19 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
             onSubmitPost();
           });
       })
-    
   }
 
   return (
     //TODO background color to bg-yellow-50
-    <div className="p-inputtext-sm ">
-
-      <h2>Add Person</h2>
-      
+    <div className="p-inputtext-xl ">
       <Dropdown value={selectedPerson} onChange={(e) => setSelectedPerson(e.value)} options={persons} optionLabel="name" placeholder="Select a person" filter
-       className="w-full md:w-14rem" />
+       className="w-full md:w-14rem h-3rem" />
       <InputText placeholder="Enter name" value={selectedPerson.name} onChange={(e) => setSelectedPerson({...selectedPerson, name: e.currentTarget.value})}
-       className='mt-2'/>
+       className='mt-2 h-3rem'/>
       <InputText placeholder="Enter surname" value={selectedPerson.surname} onChange={(e) => setSelectedPerson({...selectedPerson, surname: e.currentTarget.value})}
-      className='mt-2'/>
+      className='mt-2 h-3rem'/>
       <div className='mt-3'>
-      <label htmlFor="isTeacherSwitch" className="ml-2 mb-2 mr-2">Teacher</label>
+      <label htmlFor="isTeacherSwitch" className="ml-2 mr-2 text-xl">Teacher</label>
       <InputSwitch id="isTeacherSwitch" checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})} 
       className=''/>
       </div>

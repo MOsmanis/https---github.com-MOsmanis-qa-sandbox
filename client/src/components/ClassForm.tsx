@@ -57,7 +57,8 @@ const ClassForm = ({classList, teachers, personClassId, onClassChange}: {classLi
 
   return (
     <div className="mt-2">
-      <Dropdown value={selectedClass} onChange={(e) => changeSelectedClass(e.value)} options={schoolClasses} optionLabel="label" placeholder="Select a class" filter/>
+      <Dropdown value={selectedClass} onChange={(e) => changeSelectedClass(e.value)} options={schoolClasses} optionLabel="label" placeholder="Select a class"
+      className="h-3rem"/>
        <div hidden={selectedClass.id!==NEW_CLASS_ID} className="p-inputgroup mt-2 w-12rem">
           <InputNumber  value={selectedClass.grade} onValueChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.value)})}
           showButtons min={1} max={12} 
