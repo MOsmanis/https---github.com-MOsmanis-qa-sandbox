@@ -56,15 +56,15 @@ const ClassForm = ({classList, teachers, personClassId, onClassChange}: {classLi
   }
 
   return (
-    <div className="mt-2">
+    <div className="mt-3">
       <Dropdown value={selectedClass} onChange={(e) => changeSelectedClass(e.value)} options={schoolClasses} optionLabel="label" placeholder="Select a class"
-      className="h-3rem"/>
-       <div hidden={selectedClass.id!==NEW_CLASS_ID} className="p-inputgroup mt-2 w-12rem">
+      className="w-full h-3rem"/>
+       <div hidden={selectedClass.id!==NEW_CLASS_ID} className="p-inputgroup mt-2 w-full h-4rem">
           <InputNumber  value={selectedClass.grade} onValueChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.value)})}
           showButtons min={1} max={12} 
-          style={{maxWidth:"5rem",minWidth:"5rem"}}
+          style={{maxWidth:"10rem",minWidth:"5rem"}}
           inputClassName="focus:shadow-none focus:surface-border text-center"
-          inputStyle={{marginLeft:"2rem",height:"4rem",fontSize:"1.5rem",caretColor:"transparent"}} 
+          inputStyle={{marginLeft:"2rem",height:"auto",fontSize:"1.5rem",caretColor:"transparent"}} 
           incrementButtonClassName="bg-blue-200 absolute left-0 ml-4 w-2rem h-2rem border-round-top-sm"
           decrementButtonClassName="bg-blue-200 absolute left-0 mt-5 ml-4 w-2rem h-2rem border-round-bottom-sm"/> 
           <span className="p-inputgroup-addon w-1rem" style={{justifyContent:"left"}}>.</span>

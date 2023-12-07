@@ -6,7 +6,10 @@ import LectureTable from './components/LectureTable'
 import SandboxForm from './components/SandboxForm'
 import { PrimeReactProvider } from 'primereact/api'
 import { Panel } from "primereact/panel"
-import 'primereact/resources/themes/tailwind-light/theme.css'
+// import 'primereact/resources/themes/tailwind-light/theme.css'
+// import 'primereact/resources/themes/soho-light/theme.css'
+import 'primereact/resources/themes/saga-blue/theme.css'
+
 import 'primeflex/primeflex.css'
 
 

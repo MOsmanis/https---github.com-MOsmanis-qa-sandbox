@@ -1,9 +1,9 @@
 import { InputText } from 'primereact/inputtext';  
-import { InputSwitch } from 'primereact/inputswitch';
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ClassForm, {SchoolClass, NEW_CLASS} from './ClassForm';
 import { NEW_CLASS_ID, NEW_PERSON_ID } from '../Constants';
 import { Dropdown } from 'primereact/dropdown';
+import { Checkbox } from 'primereact/checkbox';
 
 export interface Person {
   id: number,
@@ -62,21 +62,20 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
 
   return (
     //TODO background color to bg-yellow-50
-    <div className="p-inputtext-xl ">
+    <div className="p-inputtext-xl">
       <Dropdown value={selectedPerson} onChange={(e) => setSelectedPerson(e.value)} options={persons} optionLabel="name" placeholder="Select a person" filter
-       className="w-full md:w-14rem h-3rem" />
+       className='w-full md:w-14rem h-3rem' />
       <InputText placeholder="Enter name" value={selectedPerson.name} onChange={(e) => setSelectedPerson({...selectedPerson, name: e.currentTarget.value})}
-       className='mt-2 h-3rem'/>
+       className='w-full mt-2 h-3rem'/>
       <InputText placeholder="Enter surname" value={selectedPerson.surname} onChange={(e) => setSelectedPerson({...selectedPerson, surname: e.currentTarget.value})}
-      className='mt-2 h-3rem'/>
-      <div className='mt-3'>
-      <label htmlFor="isTeacherSwitch" className="ml-2 mr-2 text-xl">Teacher</label>
-      <InputSwitch id="isTeacherSwitch" checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})} 
-      className=''/>
+      className='w-full mt-2 h-3rem'/>
+      <div className='mt-3 h-1rem w-full relative'>
+          <label htmlFor="isTeacherSwitch" className="text-xl">Teacher</label>
+          <Checkbox id="isTeacherSwitch" checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})} 
+          className='ml-2'/>
       </div>
       <ClassForm classList={classList} personClassId={selectedPerson.classId} teachers={teachers} onClassChange={setSelectedClass}/>
     </div>
   );
 }
-
 export default SandboxForm;
