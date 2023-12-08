@@ -6,12 +6,9 @@ import LectureTable from './components/LectureTable'
 import SandboxForm from './components/SandboxForm'
 import { PrimeReactProvider } from 'primereact/api'
 import { Panel } from "primereact/panel"
-// import 'primereact/resources/themes/tailwind-light/theme.css'
-// import 'primereact/resources/themes/soho-light/theme.css'
 import 'primereact/resources/themes/saga-blue/theme.css'
-
 import 'primeflex/primeflex.css'
-
+import './index.css'
 
 //TODO Add ChatGPT https://platform.openai.com/docs/quickstart?context=node
 //TODO add purgeCSS https://purgecss.com/
@@ -75,18 +72,18 @@ const App = () => {
   return (
     <PrimeReactProvider>
           <div className="grid bg-yellow-100">
-            <Panel className="col" style={{minWidth: '10rem'}}>
+            <Panel className="col-3">
               <SandboxForm personList={personList} classList={classList} onSubmitPost={onQuerySubmit}/> 
             </Panel>
-            <Panel header="person" className="col" style={{maxWidth: '25rem'}}>
+            <Panel header="person" className="col-3">
               <PersonTable personList={personList}/>
             </Panel>
-            <Panel header="school_class" className="col" style={{maxWidth: '25rem'}}>
+            <Panel header="school_class" className="col-3">
               <ClassTable classList={classList}/>
             </Panel>
-            <Panel className="col" header="lecture">
+            {/* <Panel className="col" header="lecture">
               <LectureTable lectureList={lectureList}/>
-            </Panel>
+            </Panel> */}
           </div>
           <SqlResultsTable onQuerySubmit={onQuerySubmit}/>
     </PrimeReactProvider>
