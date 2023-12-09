@@ -84,7 +84,7 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
         className='w-full p-inputtext-lg'/>
       </div>
       <div className="field col-6">
-        <Calendar placeholder="12/31/2023" className='p-inputtext-lg'/>
+        <Calendar placeholder="12/31/2023" className='p-inputtext-lg w-full'/>
       </div>
       <div className="field col-6">
         <Dropdown placeholder="Gender" options={GENDERS} className='p-inputtext-lg w-full'/>

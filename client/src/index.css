@@ -1,3 +1,7 @@
 #createSchoolClass .p-dropdown-trigger {
   display: none;
 }
+
+#schoolClassForm .col-6 {
+  margin-right: 0;
+}

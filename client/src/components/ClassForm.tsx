@@ -42,19 +42,25 @@ const ClassForm = ({schoolClass, teachers, personClassId, onNewClass: onNewClass
   }
 
   return (
-    <div id="createSchoolClass" hidden={schoolClass.id!==NEW_CLASS_ID} className="field col-6 p-inputgroup h-4rem">
-      <InputNumber  value={selectedClass.grade} onValueChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.value)})}
-      showButtons min={1} max={12} 
-      style={{maxWidth:"10rem",minWidth:"5rem"}}
-      inputClassName="focus:shadow-none focus:surface-border text-center"
-      inputStyle={{marginLeft:"2rem",height:"auto",fontSize:"1.5rem",caretColor:"transparent"}} 
-      incrementButtonClassName="bg-blue-200 absolute left-0 ml-4 w-2rem h-2rem border-round-top-sm"
-      decrementButtonClassName="bg-blue-200 absolute left-0 mt-5 ml-4 w-2rem h-2rem border-round-bottom-sm"/> 
-      <span className="p-inputgroup-addon w-1rem" style={{justifyContent:"left"}}>.</span>
-      <Dropdown value={selectedClass.letter} onChange={(e) => changeSelectedClass({...selectedClass, letter: e.value})} 
-        valueTemplate={letterTemplate}
-        options={CLASS_LETTERS} placeholder="Letter" panelClassName="text-2xl active:shadow-none focus:shadow-none focus:surface-border active:surface-border" 
-        className="w-2rem active:shadow-none focus:shadow-none focus:surface-border active:surface-border" />
+    <div id="schoolClassForm" hidden={schoolClass.id!==NEW_CLASS_ID} className="field w-full formgroup-inline">
+      <div id="createSchoolClass" className="field col-6 p-inputgroup h-4rem">
+        <InputNumber  value={selectedClass.grade} onValueChange={(e) => changeSelectedClass({...selectedClass, grade: Number(e.value)})}
+        showButtons min={1} max={12} 
+        style={{maxWidth:"10rem",minWidth:"5rem"}}
+        inputClassName="focus:shadow-none focus:surface-border text-center"
+        inputStyle={{marginLeft:"2rem",height:"auto",fontSize:"1.5rem",caretColor:"transparent"}} 
+        incrementButtonClassName="bg-blue-200 absolute left-0 ml-4 w-2rem h-2rem border-round-top-sm"
+        decrementButtonClassName="bg-blue-200 absolute left-0 ml-4 w-2rem h-2rem border-round-bottom-sm mt-5"/> 
+        <span className="p-inputgroup-addon" style={{justifyContent:"left"}}>.</span>
+        <Dropdown value={selectedClass.letter} onChange={(e) => changeSelectedClass({...selectedClass, letter: e.value})} 
+          valueTemplate={letterTemplate}
+          options={CLASS_LETTERS} placeholder="Letter" panelClassName="text-2xl active:shadow-none focus:shadow-none focus:surface-border active:surface-border" 
+          className="w-2rem active:shadow-none focus:shadow-none focus:surface-border active:surface-border" />
+      </div>
+      <div className="field col-6">
+        <label htmlFor="teachersSelect" className="">Class teacher</label>
+        <Dropdown id="teachersSelect" options={teachers} className="p-inputtext-lg w-full"/>
+      </div>
     </div>
   );
 }
