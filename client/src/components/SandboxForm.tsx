@@ -91,7 +91,7 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
       </div>
       <div className="field col-6">
       {/* mt-3 h-1rem relative */}
-        <label htmlFor="isTeacher" className="text-xl mb-0">Teacher</label>
+        <label htmlFor="isTeacher" className="text-xl mb-0 mt-2">Teacher</label>
         <Checkbox id="isTeacher" checked={selectedPerson.isTeacher} disabled={selectedPerson.id!==NEW_PERSON_ID} onChange={() => setSelectedPerson({...selectedPerson, isTeacher:!selectedPerson.isTeacher})} 
         className='ml-2'/>
       </div>
