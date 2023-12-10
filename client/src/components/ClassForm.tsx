@@ -3,6 +3,7 @@ import { NEW_CLASS_ID, NEW_PERSON_ID } from '../Constants';
 import { Person } from './SandboxForm';
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
+import TeacherSelect from "./TeacherSelect";
 
 export interface SchoolClass {
   id: number,
@@ -57,10 +58,7 @@ const ClassForm = ({schoolClass, teachers, personClassId, onNewClass: onNewClass
           options={CLASS_LETTERS} placeholder="Letter" panelClassName="text-2xl active:shadow-none focus:shadow-none focus:surface-border active:surface-border" 
           className="w-2rem active:shadow-none focus:shadow-none focus:surface-border active:surface-border" />
       </div>
-      <div className="field col-6">
-        <label htmlFor="teachersSelect" className="">Class teacher</label>
-        <Dropdown id="teachersSelect" options={teachers} className="p-inputtext-lg w-full"/>
-      </div>
+      <TeacherSelect teachers={teachers} />
     </div>
   );
 }

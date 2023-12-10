@@ -11,6 +11,7 @@ export interface Person {
   name: string,
   surname: string,
   dateOfBirth: string,
+  gender: string,
   isTeacher: boolean,
   classId: number,
   label: string,
@@ -34,10 +35,10 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
   const [teachers, setTeachers] = useState<Person[]>([])
 
   useEffect(() => {
-    if(selectedPerson.id === NEW_PERSON_ID && selectedPerson.isTeacher) {
+    if(selectedPerson.isTeacher) {
       setTeachers([selectedPerson]) 
     } else {
-      setTeachers(personList.filter((p) => p.isTeacher)) //TODO Other teachers still can select different teacher for new class
+      setTeachers(personList.filter((p) => p.isTeacher))
     }
   },[selectedPerson, personList])
 
@@ -67,7 +68,7 @@ const SandboxForm = ({personList, classList, onSubmitPost}: {personList: Person[
           });
       })
   }
-
+ 
   return (
     //TODO background color to bg-yellow-50
     <div className="formgrid grid">
